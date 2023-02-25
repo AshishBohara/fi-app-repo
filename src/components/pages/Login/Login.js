@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Form, Alert } from "antd";
-import { ShopFilled } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // component
 import { Container, Box } from "./LoginStyle";
 import { SendIcon } from "../../CustomIcons";
-import { FlexDiv } from "../../Xcomponent";
 // action
 import { login } from "../../../action/loginAction";
 

@@ -5,6 +5,8 @@ import store from "./store";
 import "./App.css";
 import Login from "./components/pages/Login/Login";
 import PageLayout from "./components/organism/PageLayout/PageLayout";
+import InterestRateList from "./components/pages/InterestRate/InterestRateList/InterestRateList";
+import InterestRateEdit from "./components/pages/InterestRate/InterestRateEdit/InterestRateEdit";
 
 function App() {
   return (
@@ -12,7 +14,11 @@ function App() {
       <Router>
         <Routes>
           <Route element={<PageLayout />}>
-            <Route element={<Login />} path="/dashboard" />
+            <Route element={<InterestRateList />} path="/interest_rate/list" />
+            <Route
+              element={<InterestRateEdit />}
+              path="/interest_rate/:interest_rate_id/edit"
+            />
           </Route>
           <Route element={<Login />} path="/" />
         </Routes>

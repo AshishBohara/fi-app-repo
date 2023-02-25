@@ -10,22 +10,22 @@ const PageLayout = () => {
   } = theme.useToken();
   return (
     <Layout>
-      <HeaderComponent />
-      <Layout>
-        <Sider
-          style={{
-            overflow: "auto",
-            height: "100vh",
-            position: "fixed",
-            left: 0,
-          }}
-        >
-          <Sidebar />
-        </Sider>
+      <Sider
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+        }}
+      >
+        <Sidebar />
+      </Sider>
+      <Layout className="site-layout" style={{ marginLeft: 200 }}>
+        <Content style={{ overflow: "initial", background: "#fff" }}>
+          <HeaderComponent />
+          <Outlet context={{}} />
+        </Content>
       </Layout>
-      <Content>
-        <Outlet context={{}} />
-      </Content>
     </Layout>
   );
 };
