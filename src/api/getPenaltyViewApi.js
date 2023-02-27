@@ -1,11 +1,10 @@
-import conf from "../config";
-
+import cnf from "../config";
 import axios from "axios";
 
-export const getInterestRateListApi = async (params) => {
+export const getPenaltyViewApi = async (params) => {
   const response = await axios({
     method: "get",
-    url: `${conf.api.base_url}interest-rate/list`,
+    url: `${cnf.api.base_url}penalty/view`,
     params: params,
     headers: {
       "Content-type": "application/json; charset=UTF-8",
@@ -15,4 +14,4 @@ export const getInterestRateListApi = async (params) => {
   return response;
 };
 
-export default getInterestRateListApi;
+export default getPenaltyViewApi;

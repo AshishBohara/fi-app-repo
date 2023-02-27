@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Layout, theme } from "antd";
-import HeaderComponent from "../HeaderComponent/HeaderComponent";
 import Sidebar from "../Sidebar/Sidebar";
 const { Content, Sider } = Layout;
 const PageLayout = () => {
@@ -22,7 +21,6 @@ const PageLayout = () => {
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Content style={{ overflow: "initial", background: "#fff" }}>
-          <HeaderComponent />
           <Outlet context={{}} />
         </Content>
       </Layout>

@@ -15,7 +15,16 @@ const Sidebar = (props) => {
           <Menu.Item key="interest_rate">
             <Link to="/interest_rate/list">Interest Rate</Link>
           </Menu.Item>
+          <Menu.Item key="penalty">
+            <Link to="/penalty/list">Penalty</Link>
+          </Menu.Item>
+          <Menu.Item key="loan-charges">
+            <Link to="/loan-charges/list">Loan Charges</Link>
+          </Menu.Item>
         </Menu.SubMenu>
+        <Menu.Item key="customers">
+          <Link to="/customers/list">Customer</Link>
+        </Menu.Item>
       </Menu>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Row, Col, Button, InputNumber, message, DatePicker } from "antd";
+import { Form, Row, Col, Button, InputNumber, message } from "antd";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 /* custom component */
@@ -14,6 +14,7 @@ import {
   getInterestRateView,
   getInterestRateViewReset,
 } from "../../../../action/getInterestRateViewAction";
+import HeaderComponent from "../../../organism/HeaderComponent/HeaderComponent";
 const InterestRateEdit = (props) => {
   /* variables */
   const { interest_rate_id } = useParams();
@@ -85,12 +86,13 @@ const InterestRateEdit = (props) => {
 
   return (
     <>
+      <HeaderComponent title="Interest Rate Edit" />
       <PageContainer>
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <Row gutter="24">
             <Col span="6">
               <Form.Item
-                label="interestRate"
+                label="Interest Rate"
                 name="interestRate"
                 rules={[{ required: true, message: "Required" }]}
               >

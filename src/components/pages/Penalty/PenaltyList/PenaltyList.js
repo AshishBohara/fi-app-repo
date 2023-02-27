@@ -6,35 +6,31 @@ import { EditOutlined } from "@ant-design/icons";
 
 /* custom component */
 import { PageContainer } from "../../../Xcomponent";
-import { Indicator } from "./InterestRateListStyle";
+import { Indicator } from "./PenaltyListStyle";
 
 /* actions */
 import {
-  getInterestRateList,
-  getInterestRateListReset,
-} from "../../../../action/getInterestRateListAction";
+  getPenaltyList,
+  getPenaltyListReset,
+} from "../../../../action/getPenaltyListAction";
 import HeaderComponent from "../../../organism/HeaderComponent/HeaderComponent";
 
-const InterestRateList = (props) => {
+const PenaltyList = (props) => {
   /* variables */
-  const {
-    getInterestRateList,
-    getInterestRateListReset,
-    getInterestRateListState,
-  } = props;
+  const { getPenaltyList, getPenaltyListReset, getPenaltyListState } = props;
   const [tableData, setTableData] = useState([]);
   const columns = [
     {
-      title: "Interest Rate",
-      dataIndex: "interestRate",
-      key: "interestRate",
+      title: "Penalty Amount",
+      dataIndex: "amount",
+      key: "amount",
     },
     {
       title: "Action",
       dataIndex: "id",
       key: "action",
       render: (id) => (
-        <Link to={`/interest_rate/${id}/edit`}>
+        <Link to={`/penalty/${id}/edit`}>
           <Button size="small" icon={<EditOutlined />} />
         </Link>
       ),
@@ -43,26 +39,26 @@ const InterestRateList = (props) => {
 
   /* callbacks */
   useEffect(() => {
-    getInterestRateList();
+    getPenaltyList();
   }, []);
 
   useEffect(() => {
-    if (getInterestRateListState.apiState === "success") {
+    if (getPenaltyListState.apiState === "success") {
       let tableData = [];
-      getInterestRateListState.list.map((row) => {
+      getPenaltyListState.list.map((row) => {
         tableData.push({
           key: row.id,
-          interestRate: row.interestRate,
+          amount: row.amount,
           id: row.id,
         });
       });
       setTableData(tableData);
     }
-  }, [getInterestRateListState]);
+  }, [getPenaltyListState]);
 
   return (
     <>
-      <HeaderComponent title="Interest Rate List" />
+      <HeaderComponent title="Penalty" />
       <PageContainer list>
         <Table
           dataSource={tableData}
@@ -76,12 +72,12 @@ const InterestRateList = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  getInterestRateListState: state.getInterestRateList,
+  getPenaltyListState: state.getPenaltyList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getInterestRateList: (params) => dispatch(getInterestRateList(params)),
-  getInterestRateListReset: () => dispatch(getInterestRateListReset()),
+  getPenaltyList: (params) => dispatch(getPenaltyList(params)),
+  getPenaltyListReset: () => dispatch(getPenaltyListReset()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterestRateList);
+export default connect(mapStateToProps, mapDispatchToProps)(PenaltyList);

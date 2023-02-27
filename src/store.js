@@ -9,6 +9,17 @@ import loginSaga from "./saga/loginSaga";
 import getInterestRateListSaga from "./saga/getInterestRateListSaga";
 import getInterestRateViewSaga from "./saga/getInterestRateViewSaga";
 import updateInterestRateSaga from "./saga/updateInterestRateSaga";
+import getPenaltyListSaga from "./saga/getPenaltyListSaga";
+import getPenaltyViewSaga from "./saga/getPenaltyViewSaga";
+import updatePenaltySaga from "./saga/updatePenaltySaga";
+import createLoanChargesSaga from "./saga/createLoanChargesSaga";
+import getLoanChargesViewSaga from "./saga/getLoanChargesViewSaga";
+import getLoanChargesListSaga from "./saga/getLoanChargesListSaga";
+import updateLoanChargesSaga from "./saga/updateLoanChargesSaga";
+import createCustomersSaga from "./saga/createCustomersSaga";
+import getCustomersViewSaga from "./saga/getCustomersViewSaga";
+import getCustomersListSaga from "./saga/getCustomersListSaga";
+import updateCustomersSaga from "./saga/updateCustomersSaga";
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -23,6 +34,17 @@ sagaMiddleware.run(loginSaga);
 sagaMiddleware.run(getInterestRateListSaga);
 sagaMiddleware.run(getInterestRateViewSaga);
 sagaMiddleware.run(updateInterestRateSaga);
+sagaMiddleware.run(getPenaltyListSaga);
+sagaMiddleware.run(getPenaltyViewSaga);
+sagaMiddleware.run(updatePenaltySaga);
+sagaMiddleware.run(createLoanChargesSaga);
+sagaMiddleware.run(getLoanChargesListSaga);
+sagaMiddleware.run(getLoanChargesViewSaga);
+sagaMiddleware.run(updateLoanChargesSaga);
+sagaMiddleware.run(createCustomersSaga);
+sagaMiddleware.run(getCustomersViewSaga);
+sagaMiddleware.run(getCustomersListSaga);
+sagaMiddleware.run(updateCustomersSaga);
 
 // render the application
 

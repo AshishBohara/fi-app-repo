@@ -2,10 +2,10 @@ import conf from "../config";
 
 import axios from "axios";
 
-export const getInterestRateListApi = async (params) => {
+export const getCustomersListApi = async (params) => {
   const response = await axios({
     method: "get",
-    url: `${conf.api.base_url}interest-rate/list`,
+    url: `${conf.api.base_url}customer/list`,
     params: params,
     headers: {
       "Content-type": "application/json; charset=UTF-8",
@@ -15,4 +15,4 @@ export const getInterestRateListApi = async (params) => {
   return response;
 };
 
-export default getInterestRateListApi;
+export default getCustomersListApi;

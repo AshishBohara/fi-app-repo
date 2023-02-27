@@ -4,7 +4,7 @@ import axios from "axios";
 export const getInterestRateViewApi = async (params) => {
   const response = await axios({
     method: "get",
-    url: `${cnf.api.base_url}interest_rate/view`,
+    url: `${cnf.api.base_url}interest-rate/view`,
     params: params,
     headers: {
       "Content-type": "application/json; charset=UTF-8",
