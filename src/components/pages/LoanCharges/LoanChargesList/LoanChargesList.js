@@ -6,7 +6,6 @@ import { EditOutlined } from "@ant-design/icons";
 
 /* custom component */
 import { PageContainer } from "../../../Xcomponent";
-import { Indicator } from "./LoanChargesListStyle";
 
 /* actions */
 import {
@@ -54,6 +53,9 @@ const LoanChargesList = (props) => {
   /* callbacks */
   useEffect(() => {
     getLoanChargesList();
+    return () => {
+      getLoanChargesListReset();
+    };
   }, []);
 
   useEffect(() => {

@@ -6,7 +6,6 @@ import { EditOutlined } from "@ant-design/icons";
 
 /* custom component */
 import { PageContainer } from "../../../Xcomponent";
-import { Indicator } from "./InterestRateListStyle";
 
 /* actions */
 import {
@@ -44,6 +43,9 @@ const InterestRateList = (props) => {
   /* callbacks */
   useEffect(() => {
     getInterestRateList();
+    return () => {
+      getInterestRateListReset();
+    };
   }, []);
 
   useEffect(() => {

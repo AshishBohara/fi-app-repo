@@ -15,6 +15,7 @@ import createCustomers from "./reducer/createCustomersReducer";
 import getCustomersView from "./reducer/getCustomersViewReducer";
 import getCustomersList from "./reducer/getCustomersListReducer";
 import updateCustomers from "./reducer/updateCustomersReducer";
+import addCustomerLoan from "./reducer/addCustomerLoanReducer";
 export default combineReducers({
   login,
   getInterestRateList,
@@ -31,4 +32,5 @@ export default combineReducers({
   getCustomersView,
   getCustomersList,
   updateCustomers,
+  addCustomerLoan,
 });

@@ -6,7 +6,6 @@ import { EditOutlined } from "@ant-design/icons";
 
 /* custom component */
 import { PageContainer } from "../../../Xcomponent";
-import { Indicator } from "./PenaltyListStyle";
 
 /* actions */
 import {
@@ -40,6 +39,9 @@ const PenaltyList = (props) => {
   /* callbacks */
   useEffect(() => {
     getPenaltyList();
+    return () => {
+      getPenaltyListReset();
+    };
   }, []);
 
   useEffect(() => {

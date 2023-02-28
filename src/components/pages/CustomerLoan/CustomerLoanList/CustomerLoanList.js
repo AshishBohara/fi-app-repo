@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Space, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { EditOutlined } from "@ant-design/icons";
 
@@ -14,10 +14,12 @@ import {
 } from "../../../../action/getCustomersListAction";
 import HeaderComponent from "../../../organism/HeaderComponent/HeaderComponent";
 
-const CustomersList = (props) => {
+const CustomerLoanList = (props) => {
   /* variables */
   const { getCustomersList, getCustomersListReset, getCustomersListState } =
     props;
+  const { customer_id } = useParams();
+
   const [tableData, setTableData] = useState([]);
   const columns = [
     {
@@ -76,10 +78,10 @@ const CustomersList = (props) => {
   return (
     <>
       <HeaderComponent
-        title="Customer List"
+        title="Customer Loan List"
         actionBtn={
-          <Link to="/customers/add">
-            <Button>Add New</Button>
+          <Link to={`/customers/${customer_id}/new-loan`}>
+            <Button>Add New Loan</Button>
           </Link>
         }
       />
@@ -104,4 +106,4 @@ const mapDispatchToProps = (dispatch) => ({
   getCustomersListReset: () => dispatch(getCustomersListReset()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomersList);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerLoanList);

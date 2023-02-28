@@ -15,6 +15,8 @@ import LoanChargesEdit from "./components/pages/LoanCharges/LoanChargesEdit/Loan
 import CustomersEdit from "./components/pages/Customers/CustomersEdit/CustomersEdit";
 import CustomersAdd from "./components/pages/Customers/CustomersAdd/CustomersAdd";
 import CustomersList from "./components/pages/Customers/CustomersList/CustomersList";
+import CustomerLoanList from "./components/pages/CustomerLoan/CustomerLoanList/CustomerLoanList";
+import CustomerLoanAdd from "./components/pages/CustomerLoan/CustomerLoanAdd/CustomerLoanAdd";
 
 function App() {
   return (
@@ -35,6 +37,14 @@ function App() {
             <Route element={<CustomersAdd />} path="/customers/add" />
             <Route element={<CustomersList />} path="/customers/list" />
             <Route element={<LoanChargesEdit />} path="/customers/:id/edit" />
+            <Route
+              element={<CustomerLoanList />}
+              path="/customers/:customer_id/loan-list"
+            />
+            <Route
+              element={<CustomerLoanAdd />}
+              path="/customers/:customer_id/new-loan"
+            />
           </Route>
           <Route element={<Login />} path="/" />
         </Routes>
