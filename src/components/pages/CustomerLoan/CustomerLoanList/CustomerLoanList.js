@@ -9,33 +9,58 @@ import { PageContainer } from "../../../Xcomponent";
 
 /* actions */
 import {
-  getCustomersList,
-  getCustomersListReset,
-} from "../../../../action/getCustomersListAction";
+  getCustomerLoanList,
+  getCustomerLoanListReset,
+} from "../../../../action/getCustomerLoanListAction";
 import HeaderComponent from "../../../organism/HeaderComponent/HeaderComponent";
+import moment from "moment/moment";
 
 const CustomerLoanList = (props) => {
   /* variables */
-  const { getCustomersList, getCustomersListReset, getCustomersListState } =
-    props;
+  const {
+    getCustomerLoanList,
+    getCustomerLoanListReset,
+    getCustomerLoanListState,
+  } = props;
   const { customer_id } = useParams();
 
   const [tableData, setTableData] = useState([]);
+
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Loan Date",
+      dataIndex: "loanDate",
+      key: "loanDate",
     },
     {
-      title: "Father Name",
-      dataIndex: "fatherName",
-      key: "fatherName",
+      title: "Loan Amount",
+      dataIndex: "loanAmount",
+      key: "loanAmount",
     },
     {
-      title: "Mobile Number",
-      dataIndex: "mobileNumber",
-      key: "mobileNumber",
+      title: "No. of Installment",
+      dataIndex: "noOfInstallment",
+      key: "noOfInstallment",
+    },
+    {
+      title: "Interest Rate",
+      dataIndex: "interestRate",
+      key: "interestRate",
+    },
+    {
+      title: "Penalty Amount",
+      dataIndex: "penaltyAmount",
+      key: "penaltyAmount",
+    },
+    {
+      title: "Total Loan Charges",
+      dataIndex: "totalLoanCharges",
+      key: "totalLoanCharges",
+    },
+    {
+      title: "Loan Completed",
+      dataIndex: "loanCompleted",
+      key: "loanCompleted",
     },
     {
       title: "Action",
@@ -44,10 +69,9 @@ const CustomerLoanList = (props) => {
       render: (id) => (
         <>
           <Space>
-            <Link to={`/customers/${id}/edit`}>
-              <Button size="small" icon={<EditOutlined />} />
+            <Link to={`/customers/${customer_id}/${id}/installment`}>
+              Installment
             </Link>
-            <Link to={`/customers/${id}/loan-list`}>Loan</Link>
           </Space>
         </>
       ),
@@ -56,24 +80,31 @@ const CustomerLoanList = (props) => {
 
   /* callbacks */
   useEffect(() => {
-    getCustomersList();
+    getCustomerLoanList({ customerId: customer_id });
+    return () => {
+      getCustomerLoanListReset();
+    };
   }, []);
 
   useEffect(() => {
-    if (getCustomersListState.apiState === "success") {
+    if (getCustomerLoanListState.apiState === "success") {
       let tableData = [];
-      getCustomersListState.list.map((row) => {
+      getCustomerLoanListState.list.map((row) => {
         tableData.push({
           key: row.id,
-          name: row.name,
-          mobileNumber: row.mobileNumber,
-          fatherName: row.fatherName,
+          loanDate: moment(row.loanDate).format("DD-MMM-YYYY"),
+          loanAmount: row.loanAmount,
+          noOfInstallment: row.noOfInstallment,
+          interestRate: row.interestRate,
+          penaltyAmount: row.penaltyAmount,
+          totalLoanCharges: row.totalLoanCharges,
+          loanCompleted: row.loanCompleted ? "Yes" : "No",
           id: row.id,
         });
       });
       setTableData(tableData);
     }
-  }, [getCustomersListState]);
+  }, [getCustomerLoanListState]);
 
   return (
     <>
@@ -98,12 +129,12 @@ const CustomerLoanList = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  getCustomersListState: state.getCustomersList,
+  getCustomerLoanListState: state.getCustomerLoanList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getCustomersList: (params) => dispatch(getCustomersList(params)),
-  getCustomersListReset: () => dispatch(getCustomersListReset()),
+  getCustomerLoanList: (params) => dispatch(getCustomerLoanList(params)),
+  getCustomerLoanListReset: () => dispatch(getCustomerLoanListReset()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerLoanList);

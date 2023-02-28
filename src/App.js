@@ -17,6 +17,7 @@ import CustomersAdd from "./components/pages/Customers/CustomersAdd/CustomersAdd
 import CustomersList from "./components/pages/Customers/CustomersList/CustomersList";
 import CustomerLoanList from "./components/pages/CustomerLoan/CustomerLoanList/CustomerLoanList";
 import CustomerLoanAdd from "./components/pages/CustomerLoan/CustomerLoanAdd/CustomerLoanAdd";
+import CustomerInstallmentList from "./components/pages/CustomerLoan/CustomerInstallmentList/CustomerInstallmentList";
 
 function App() {
   return (
@@ -41,9 +42,13 @@ function App() {
               element={<CustomerLoanList />}
               path="/customers/:customer_id/loan-list"
             />
-            <Route
+            {/* <Route
               element={<CustomerLoanAdd />}
               path="/customers/:customer_id/new-loan"
+            /> */}
+            <Route
+              element={<CustomerInstallmentList />}
+              path="/customers/:customer_id/:customer_loan_id/installment"
             />
           </Route>
           <Route element={<Login />} path="/" />
