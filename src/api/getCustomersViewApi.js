@@ -1,5 +1,6 @@
 import cnf from "../config";
 import axios from "axios";
+import { getCustomerToken } from "../utils";
 
 export const getCustomersViewApi = async (params) => {
   const response = await axios({
@@ -8,6 +9,7 @@ export const getCustomersViewApi = async (params) => {
     params: params,
     headers: {
       "Content-type": "application/json; charset=UTF-8",
+      authorization: `Bearer ${getCustomerToken()}`,
     },
   });
 

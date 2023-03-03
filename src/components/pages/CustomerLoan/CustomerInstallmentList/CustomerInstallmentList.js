@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Space, Table } from "antd";
+import { Button, message, Space, Table } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -11,6 +11,10 @@ import {
   getCustomerInstallmentList,
   getCustomerInstallmentListReset,
 } from "../../../../action/getCustomerInstallmentListAction";
+import {
+  installmentPayment,
+  installmentPaymentReset,
+} from "../../../../action/installmentPaymentAction";
 import HeaderComponent from "../../../organism/HeaderComponent/HeaderComponent";
 import moment from "moment/moment";
 
@@ -20,6 +24,9 @@ const CustomerInstallmentList = (props) => {
     getCustomerInstallmentList,
     getCustomerInstallmentListReset,
     getCustomerInstallmentListState,
+    installmentPayment,
+    installmentPaymentReset,
+    installmentPaymentState,
   } = props;
   const { customer_id, customer_loan_id } = useParams();
 
@@ -46,27 +53,47 @@ const CustomerInstallmentList = (props) => {
       dataIndex: "totalAmount",
       key: "totalAmount",
     },
-    {
-      title: "Installment Completed",
-      dataIndex: "installmentCompleted",
-      key: "installmentCompleted",
-    },
+    // {
+    //   title: "Installment Completed",
+    //   dataIndex: "installmentCompleted",
+    //   key: "installmentCompleted",
+    // },
     {
       title: "Action",
-      dataIndex: "id",
+      dataIndex: "data",
       key: "action",
-      render: (id) => (
+      render: (row) => (
         <>
           <Space>
-            <Link to={`/customer-loan/${customer_id}/${id}/installment`}>
-              Payment
-            </Link>
+            {row.installmentCompleted ? (
+              <span>Paid</span>
+            ) : (
+              <Button
+                size="small"
+                type="dashed"
+                onClick={() =>
+                  payment({
+                    id: row.id,
+                    customerLoanId: row.customerLoanId,
+                    penaltyAmount: row.penaltyAmount,
+                    totalAmount: row.totalAmount,
+                    customerId: customer_id,
+                  })
+                }
+                loading={installmentPaymentState.apiState === "loading"}
+              >
+                Payment
+              </Button>
+            )}
           </Space>
         </>
       ),
     },
   ];
 
+  const payment = (data) => {
+    installmentPayment(data);
+  };
   /* callbacks */
   useEffect(() => {
     getCustomerInstallmentList({
@@ -75,8 +102,25 @@ const CustomerInstallmentList = (props) => {
     });
     return () => {
       getCustomerInstallmentListReset();
+      installmentPaymentReset();
     };
   }, []);
+
+  useEffect(() => {
+    if (installmentPaymentState.apiState === "success") {
+      message.success(installmentPaymentState.message);
+      installmentPaymentReset();
+      getCustomerInstallmentList({
+        customerId: customer_id,
+        customerLoanId: customer_loan_id,
+      });
+    }
+
+    if (installmentPaymentState.apiState === "error") {
+      installmentPaymentReset();
+      message.error(installmentPaymentState.message);
+    }
+  }, [installmentPaymentState]);
 
   useEffect(() => {
     if (getCustomerInstallmentListState.apiState === "success") {
@@ -85,8 +129,11 @@ const CustomerInstallmentList = (props) => {
         let a = moment(row.installmentDate);
         let b = moment(new Date());
         let days = b.diff(a, "days");
-        let penaltyAmount = days > 0 ? days * 200 : row.penaltyAmount;
-
+        let penaltyAmount =
+          days > 0 ? days * row.customer_loan.penaltyAmount : row.penaltyAmount;
+        let totalAmount = row.installmentCompleted
+          ? row.totalAmount
+          : row.installmentAmount + penaltyAmount;
         tableData.push({
           key: row.id,
           installmentDate: moment(row.installmentDate).format("DD-MMM-YYYY"),
@@ -94,11 +141,15 @@ const CustomerInstallmentList = (props) => {
           penaltyAmount: row.installmentCompleted
             ? row.penaltyAmount
             : penaltyAmount,
-          totalAmount: row.installmentCompleted
-            ? row.totalAmount
-            : row.installmentAmount + penaltyAmount,
-          installmentCompleted: row.installmentCompleted ? "Yes" : "No",
-          id: row.id,
+          totalAmount: totalAmount,
+          // installmentCompleted: row.installmentCompleted ? "Yes" : "No",
+          data: {
+            id: row.id,
+            customerLoanId: row.customerLoanId,
+            installmentCompleted: row.installmentCompleted,
+            penaltyAmount: penaltyAmount,
+            totalAmount: totalAmount,
+          },
         });
       });
       setTableData(tableData);
@@ -108,12 +159,12 @@ const CustomerInstallmentList = (props) => {
   return (
     <>
       <HeaderComponent
-        title="Customer Loan List"
-        actionBtn={
-          <Link to={`/customers/${customer_id}/new-loan`}>
-            <Button>Add New Loan</Button>
-          </Link>
-        }
+        title="Customer Instllments List"
+        // actionBtn={
+        //   <Link to={`/customers/${customer_id}/new-loan`}>
+        //     <Button>Add New Loan</Button>
+        //   </Link>
+        // }
       />
       <PageContainer list>
         <Table
@@ -129,6 +180,7 @@ const CustomerInstallmentList = (props) => {
 
 const mapStateToProps = (state) => ({
   getCustomerInstallmentListState: state.getCustomerInstallmentList,
+  installmentPaymentState: state.installmentPayment,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -136,6 +188,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getCustomerInstallmentList(params)),
   getCustomerInstallmentListReset: () =>
     dispatch(getCustomerInstallmentListReset()),
+  installmentPayment: (params) => dispatch(installmentPayment(params)),
+  installmentPaymentReset: () => dispatch(installmentPaymentReset()),
 });
 
 export default connect(

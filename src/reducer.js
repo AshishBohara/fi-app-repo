@@ -18,6 +18,8 @@ import updateCustomers from "./reducer/updateCustomersReducer";
 import addCustomerLoan from "./reducer/addCustomerLoanReducer";
 import getCustomerLoanList from "./reducer/getCustomerLoanListReducer";
 import getCustomerInstallmentList from "./reducer/getCustomerInstallmentListReducer";
+import installmentPayment from "./reducer/installmentPaymentReducer";
+
 export default combineReducers({
   login,
   getInterestRateList,
@@ -37,4 +39,5 @@ export default combineReducers({
   addCustomerLoan,
   getCustomerLoanList,
   getCustomerInstallmentList,
+  installmentPayment,
 });

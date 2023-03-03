@@ -125,7 +125,7 @@ const CustomerLoanAdd = (props) => {
   useEffect(() => {
     if (addCustomerLoanState.apiState === "success") {
       message.success(addCustomerLoanState.message);
-      navigate("/customers/list");
+      navigate(`/customers/${customer_id}/loan-list`);
     }
 
     if (addCustomerLoanState.apiState === "error") {

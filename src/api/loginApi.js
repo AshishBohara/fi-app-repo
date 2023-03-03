@@ -6,7 +6,7 @@ export const loginApi = async (params) => {
     method: "post",
     url: `${conf.api.base_url}user/login`,
     data: {
-      email: params.email,
+      mobileNumber: params.mobileNumber,
       password: params.password,
     },
     headers: {

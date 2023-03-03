@@ -23,6 +23,7 @@ import updateCustomersSaga from "./saga/updateCustomersSaga";
 import addCustomerLoanSaga from "./saga/addCustomerLoanSaga";
 import getCustomerLoanListSaga from "./saga/getCustomerLoanListSaga";
 import getCustomerInstallmentListSaga from "./saga/getCustomerInstallmentListSaga";
+import installmentPaymentSaga from "./saga/installmentPaymentSaga";
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -51,6 +52,7 @@ sagaMiddleware.run(updateCustomersSaga);
 sagaMiddleware.run(addCustomerLoanSaga);
 sagaMiddleware.run(getCustomerLoanListSaga);
 sagaMiddleware.run(getCustomerInstallmentListSaga);
+sagaMiddleware.run(installmentPaymentSaga);
 
 // render the application
 

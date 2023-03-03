@@ -70,7 +70,9 @@ const CustomerLoanList = (props) => {
         <>
           <Space>
             <Link to={`/customers/${customer_id}/${id}/installment`}>
-              Installment
+              <Button size="small" type="dashed">
+                Installment
+              </Button>
             </Link>
           </Space>
         </>

@@ -45,7 +45,12 @@ const CustomersList = (props) => {
             <Link to={`/customers/${id}/edit`}>
               <Button size="small" icon={<EditOutlined />} />
             </Link>
-            <Link to={`/customers/${id}/loan-list`}>Loan</Link>
+
+            <Link to={`/customers/${id}/loan-list`}>
+              <Button size="small" type="dashed">
+                Loan
+              </Button>
+            </Link>
           </Space>
         </>
       ),

@@ -1,5 +1,6 @@
 import cnf from "../config";
 import axios from "axios";
+import { getCustomerToken } from "../utils";
 
 export const updateLoanChargesApi = async (params) => {
   const response = await axios({
@@ -8,6 +9,7 @@ export const updateLoanChargesApi = async (params) => {
     data: params,
     headers: {
       "Content-type": "application/json; charset=UTF-8",
+      authorization: `Bearer ${getCustomerToken()}`,
     },
   });
 

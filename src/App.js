@@ -18,38 +18,50 @@ import CustomersList from "./components/pages/Customers/CustomersList/CustomersL
 import CustomerLoanList from "./components/pages/CustomerLoan/CustomerLoanList/CustomerLoanList";
 import CustomerLoanAdd from "./components/pages/CustomerLoan/CustomerLoanAdd/CustomerLoanAdd";
 import CustomerInstallmentList from "./components/pages/CustomerLoan/CustomerInstallmentList/CustomerInstallmentList";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route element={<PageLayout />}>
-            <Route element={<InterestRateList />} path="/interest_rate/list" />
-            <Route
-              element={<InterestRateEdit />}
-              path="/interest_rate/:interest_rate_id/edit"
-            />
-            <Route element={<PenaltyList />} path="/penalty/list" />
-            <Route element={<PenaltyEdit />} path="/penalty/:penalty_id/edit" />
-            <Route element={<LoanChargesAdd />} path="/loan-charges/add" />
-            <Route element={<LoanChargesList />} path="/loan-charges/list" />
-            <Route element={<CustomersEdit />} path="/customers/:id/edit" />
-            <Route element={<CustomersAdd />} path="/customers/add" />
-            <Route element={<CustomersList />} path="/customers/list" />
-            <Route element={<LoanChargesEdit />} path="/customers/:id/edit" />
-            <Route
-              element={<CustomerLoanList />}
-              path="/customers/:customer_id/loan-list"
-            />
-            {/* <Route
-              element={<CustomerLoanAdd />}
-              path="/customers/:customer_id/new-loan"
-            /> */}
-            <Route
-              element={<CustomerInstallmentList />}
-              path="/customers/:customer_id/:customer_loan_id/installment"
-            />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<PageLayout />}>
+              <Route
+                element={<InterestRateList />}
+                path="/interest_rate/list"
+              />
+              <Route
+                element={<InterestRateEdit />}
+                path="/interest_rate/:interest_rate_id/edit"
+              />
+              <Route element={<PenaltyList />} path="/penalty/list" />
+              <Route
+                element={<PenaltyEdit />}
+                path="/penalty/:penalty_id/edit"
+              />
+              <Route element={<LoanChargesAdd />} path="/loan-charges/add" />
+              <Route element={<LoanChargesList />} path="/loan-charges/list" />
+              <Route
+                element={<LoanChargesEdit />}
+                path="/loan-charges/:loan_charges_id/edit"
+              />
+              <Route element={<CustomersEdit />} path="/customers/:id/edit" />
+              <Route element={<CustomersAdd />} path="/customers/add" />
+              <Route element={<CustomersList />} path="/customers/list" />
+              <Route
+                element={<CustomerLoanList />}
+                path="/customers/:customer_id/loan-list"
+              />
+              <Route
+                element={<CustomerLoanAdd />}
+                path="/customers/:customer_id/new-loan"
+              />
+              <Route
+                element={<CustomerInstallmentList />}
+                path="/customers/:customer_id/:customer_loan_id/installment"
+              />
+            </Route>
           </Route>
           <Route element={<Login />} path="/" />
         </Routes>

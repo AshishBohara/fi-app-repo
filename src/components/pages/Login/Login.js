@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Form, Alert } from "antd";
+import { Button, Input, Form, Alert, InputNumber } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Login = (props) => {
   // variables
   const { login, loginState } = props;
   const [formData, setFormData] = useState({
-    email: "",
+    mobileNumber: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -21,17 +21,19 @@ const Login = (props) => {
   useEffect(() => {
     if (loginState.apiState === "success") {
       loginState.apiState = "";
-      localStorage.setItem("BtwUserToken", loginState.data.token);
-      localStorage.setItem("BtwUser", JSON.stringify(loginState.data.user));
-      navigate("/dashboard");
+      localStorage.setItem("FiUserToken", loginState.data.token);
+      localStorage.setItem("FiUser", JSON.stringify(loginState.data.user));
+      navigate("/customers/list");
     }
-  }, [loginState.apiState]);
+  }, [loginState]);
 
   // functions
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const handleNumberChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
   const onFormSubmit = () => {
     login(formData);
   };
@@ -48,16 +50,17 @@ const Login = (props) => {
 
           <Form layout="vertical" onFinish={onFormSubmit}>
             <Form.Item
-              name="email"
+              name="mobileNumber"
               rules={[
                 { required: true, message: "Required" },
-                { type: "email", message: "Email is not valid" },
+                { type: "mobileNumber", message: "Mobile Number is not valid" },
               ]}
             >
-              <Input
-                name="email"
-                placeholder="Email"
-                onChange={handleOnChange}
+              <InputNumber
+                name="mobileNumber"
+                placeholder="Mobile Number"
+                style={{ width: "100%" }}
+                onChange={(v) => handleNumberChange("mobileNumber", v)}
               />
             </Form.Item>
 
