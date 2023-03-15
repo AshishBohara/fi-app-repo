@@ -19,6 +19,7 @@ import CustomerLoanList from "./components/pages/CustomerLoan/CustomerLoanList/C
 import CustomerLoanAdd from "./components/pages/CustomerLoan/CustomerLoanAdd/CustomerLoanAdd";
 import CustomerInstallmentList from "./components/pages/CustomerLoan/CustomerInstallmentList/CustomerInstallmentList";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Logout from "./components/pages/Logout";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
             </Route>
           </Route>
           <Route element={<Login />} path="/" />
+          <Route element={<Logout />} path="/logout" />
         </Routes>
       </Router>
     </Provider>
