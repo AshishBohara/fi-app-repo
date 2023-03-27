@@ -18,6 +18,7 @@ const HeaderComponent = (props) => {
         top: 0,
         zIndex: 5,
       }}
+      id="adminHeader"
     >
       <div>
         <h1 style={{ margin: 0 }}>{props.title}</h1>

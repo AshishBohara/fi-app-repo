@@ -1,3 +1,4 @@
+import { Pagination, Table } from "antd";
 import styled from "styled-components";
 
 export const LoginContainer = styled.div`
@@ -18,4 +19,35 @@ export const PageContainer = styled.div`
     `
         padding: 0;
     `}
+`;
+
+export const Xtable = styled(Table)`
+  .ant-table-thead > tr > th {
+    font-family: Helvetica;
+    font-weight: bold;
+    color: rgb(0 0 0 / 1);
+    background-color: #ffffff;
+    font-size: 13px;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+  }
+
+  .ant-table-thead .ant-table-column-sorters {
+    padding: 0;
+  }
+
+  .ant-table-tbody > tr > td {
+    font-family: Helvetica;
+    font-weight: normal;
+    color: rgb(0 0 0 / 0.75);
+    background-color: #ffffff;
+    font-size: 13px;
+    padding: 0.3rem 1rem;
+  }
+`;
+
+export const Xpagination = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
 `;

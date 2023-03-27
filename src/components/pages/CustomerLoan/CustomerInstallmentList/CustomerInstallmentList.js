@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, message, Space, Table } from "antd";
+import {
+  Button,
+  message,
+  Popconfirm,
+  Space,
+  Table,
+  Modal,
+  Col,
+  Row,
+  Form,
+  InputNumber,
+} from "antd";
 import { Link, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -29,10 +40,52 @@ const CustomerInstallmentList = (props) => {
     installmentPaymentState,
   } = props;
   const { customer_id, customer_loan_id } = useParams();
+  const [form] = Form.useForm();
 
   const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  let initialData = {
+    id: null,
+    customerLoanId: customer_loan_id,
+    customerId: customer_id,
+    installmentDate: null,
+    installmentAmount: 0,
+    penaltyAmount: 0,
+    totalAmount: 0,
+    dueAmount: 0,
+    payAmount: 0,
+    exactAmount: 0,
+  };
+  const [formData, setFormData] = useState(initialData);
+  const showModal = (data) => {
+    setOpen(true);
+    form.setFieldsValue({
+      payAmount: data.dueAmount,
+    });
+    setFormData({
+      ...formData,
+      ["id"]: data.id,
+      ["installmentDate"]: data.installmentDate,
+      ["installmentAmount"]: data.installmentAmount,
+      ["penaltyAmount"]: data.penaltyAmount,
+      ["totalAmount"]: data.totalAmount,
+      ["dueAmount"]: 0,
+      ["payAmount"]: data.dueAmount,
+      ["exactAmount"]: data.dueAmount,
+    });
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   const columns = [
+    {
+      title: "Sr. No.",
+      dataIndex: "srno",
+      key: "srno",
+    },
     {
       title: "Installment Date",
       dataIndex: "installmentDate",
@@ -53,11 +106,11 @@ const CustomerInstallmentList = (props) => {
       dataIndex: "totalAmount",
       key: "totalAmount",
     },
-    // {
-    //   title: "Installment Completed",
-    //   dataIndex: "installmentCompleted",
-    //   key: "installmentCompleted",
-    // },
+    {
+      title: "Due Amount",
+      dataIndex: "dueAmount",
+      key: "dueAmount",
+    },
     {
       title: "Action",
       dataIndex: "data",
@@ -67,21 +120,20 @@ const CustomerInstallmentList = (props) => {
           <Space>
             {row.installmentCompleted ? (
               <span>Paid</span>
-            ) : (
-              <Button
-                size="small"
-                type="dashed"
-                onClick={() =>
-                  payment({
-                    id: row.id,
-                    customerLoanId: row.customerLoanId,
-                    penaltyAmount: row.penaltyAmount,
-                    totalAmount: row.totalAmount,
-                    customerId: customer_id,
-                  })
-                }
-                loading={installmentPaymentState.apiState === "loading"}
+            ) : row.days >= 0 ? (
+              <Popconfirm
+                title="Are you sure to payment this installment?"
+                onConfirm={() => showModal(row)}
+                okText="Payment"
+                cancelText="Cancel"
+                okType="success"
               >
+                <Button size="small" type="dashed">
+                  Payment
+                </Button>
+              </Popconfirm>
+            ) : (
+              <Button size="small" type="dashed" disabled={row.days < 0}>
                 Payment
               </Button>
             )}
@@ -91,9 +143,6 @@ const CustomerInstallmentList = (props) => {
     },
   ];
 
-  const payment = (data) => {
-    installmentPayment(data);
-  };
   /* callbacks */
   useEffect(() => {
     getCustomerInstallmentList({
@@ -103,6 +152,7 @@ const CustomerInstallmentList = (props) => {
     return () => {
       getCustomerInstallmentListReset();
       installmentPaymentReset();
+      setFormData(initialData);
     };
   }, []);
 
@@ -110,6 +160,8 @@ const CustomerInstallmentList = (props) => {
     if (installmentPaymentState.apiState === "success") {
       message.success(installmentPaymentState.message);
       installmentPaymentReset();
+      setOpen(false);
+      setFormData(initialData);
       getCustomerInstallmentList({
         customerId: customer_id,
         customerLoanId: customer_loan_id,
@@ -125,30 +177,36 @@ const CustomerInstallmentList = (props) => {
   useEffect(() => {
     if (getCustomerInstallmentListState.apiState === "success") {
       let tableData = [];
-      getCustomerInstallmentListState.list.map((row) => {
-        let a = moment(row.installmentDate);
-        let b = moment(new Date());
-        let days = b.diff(a, "days");
+      getCustomerInstallmentListState.list.map((row, index) => {
+        let installmentDate = moment(row.installmentDate).format("DD-MMM-YYYY");
+        let currentDate = moment(new Date()).format("YYYY-MM-DD");
+        let days = moment(currentDate).diff(row.installmentDate, "days");
         let penaltyAmount =
           days > 0 ? days * row.customer_loan.penaltyAmount : row.penaltyAmount;
+        // console.log("hello", days);
         let totalAmount = row.installmentCompleted
           ? row.totalAmount
           : row.installmentAmount + penaltyAmount;
+        let dueAmount = row.dueAmount ?? totalAmount;
         tableData.push({
+          srno: index + 1,
           key: row.id,
-          installmentDate: moment(row.installmentDate).format("DD-MMM-YYYY"),
+          installmentDate: installmentDate,
           installmentAmount: row.installmentAmount,
           penaltyAmount: row.installmentCompleted
             ? row.penaltyAmount
             : penaltyAmount,
           totalAmount: totalAmount,
-          // installmentCompleted: row.installmentCompleted ? "Yes" : "No",
+          dueAmount: dueAmount,
           data: {
             id: row.id,
-            customerLoanId: row.customerLoanId,
             installmentCompleted: row.installmentCompleted,
             penaltyAmount: penaltyAmount,
             totalAmount: totalAmount,
+            installmentDate: installmentDate,
+            installmentAmount: row.installmentAmount,
+            dueAmount: dueAmount,
+            days: days,
           },
         });
       });
@@ -156,16 +214,21 @@ const CustomerInstallmentList = (props) => {
     }
   }, [getCustomerInstallmentListState]);
 
+  const handleNumberChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+      ["dueAmount"]: formData.exactAmount - value,
+    });
+  };
+
+  const handleSubmit = () => {
+    installmentPayment(formData);
+  };
+
   return (
     <>
-      <HeaderComponent
-        title="Customer Instllments List"
-        // actionBtn={
-        //   <Link to={`/customers/${customer_id}/new-loan`}>
-        //     <Button>Add New Loan</Button>
-        //   </Link>
-        // }
-      />
+      <HeaderComponent title="Customer Instllments List" />
       <PageContainer list>
         <Table
           dataSource={tableData}
@@ -174,6 +237,68 @@ const CustomerInstallmentList = (props) => {
           pagination={false}
         />
       </PageContainer>
+      <Modal
+        open={open}
+        title={formData.installmentDate}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form form={form} layout="horizontal" onFinish={handleSubmit}>
+          <Row gutter={16}>
+            <Col span="12">Installment Amount</Col>
+            <Col span="12">{formData.totalAmount}</Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span="12">Penalty Amount</Col>
+            <Col span="12">{formData.penaltyAmount}</Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span="12">Total Amount</Col>
+            <Col span="12">{formData.totalAmount}</Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span="12">Payble Amount</Col>
+            <Col span="12">
+              <Form.Item
+                label=""
+                name="payAmount"
+                rules={[{ required: true, message: "Required" }]}
+              >
+                <InputNumber
+                  name="payAmount"
+                  placeholder="Enter amount"
+                  style={{ width: "60%" }}
+                  min={1}
+                  max={formData.exactAmount}
+                  onChange={(v) => handleNumberChange("payAmount", v)}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span="12">Due Amount</Col>
+            <Col span="12">{formData.dueAmount}</Col>
+          </Row>
+          <Row gutter={24}>
+            <Col
+              span="24"
+              style={{ display: "flex", justifyContent: "center", gap: 10 }}
+            >
+              <Button key="back" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button
+                key="submit"
+                type="primary"
+                htmlType="submit"
+                loading={installmentPaymentState.apiState === "loading"}
+              >
+                Submit
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
     </>
   );
 };

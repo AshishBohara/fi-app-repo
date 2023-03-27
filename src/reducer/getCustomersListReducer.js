@@ -10,6 +10,7 @@ const initialState = {
   apiState: "", // loading, success, error
   message: "",
   list: [],
+  totalRecords: 0,
 };
 
 export default function (state = initialState, action) {
@@ -24,7 +25,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         apiState: "success",
-        list: action.response.data.data,
+        list: action.response.data.data.rows,
+        totalRecords: action.response.data.data.count,
       };
 
     case GET_CUSTOMERS_LIST_FAIL:
