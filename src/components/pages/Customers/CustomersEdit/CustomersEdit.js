@@ -56,6 +56,7 @@ const CustomersEdit = (props) => {
       id: id,
     });
   }, []);
+
   useEffect(() => {
     if (getCustomersViewState.apiState === "success") {
       form.setFieldsValue({

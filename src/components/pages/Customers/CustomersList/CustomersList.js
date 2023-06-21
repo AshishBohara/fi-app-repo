@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Space, Form, Row, Col, Input } from "antd";
+import { Button, Space, Form, Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, SearchOutlined } from "@ant-design/icons";
 
 /* custom component */
-import { PageContainer, Xtable, Xpagination } from "../../../Xcomponent";
+import {
+  PageContainer,
+  Xtable,
+  Xpagination,
+  InputBox,
+  XButton,
+} from "../../../Xcomponent";
 import ScrollBox from "../../../ScrollBox";
 /* actions */
 import {
@@ -69,7 +75,6 @@ const CustomersList = (props) => {
 
   /* callbacks */
   useEffect(() => {
-    // getCustomersList(pagination);
     getCustomersList({
       page_no: pagination.page_no,
       page_size: pagination.page_size,
@@ -113,8 +118,8 @@ const CustomersList = (props) => {
     setPagination({ ...pagination, ["page_no"]: 1 });
   };
   //searchfilters
-  const searchPatient = () => {
-    setPagination({ ...pagination, ["page"]: 1 });
+  const searchList = () => {
+    setPagination({ ...pagination, ["page_no"]: 1 });
   };
   return (
     <>
@@ -126,55 +131,51 @@ const CustomersList = (props) => {
           </Link>
         }
       />
-      <PageContainer list>
-        <Form form={form} onFinish={searchPatient} layout="vertical">
+      <PageContainer>
+        <Form
+          form={form}
+          onFinish={searchList}
+          layout="vertical"
+          id="adminSubHeader2"
+        >
           <Row gutter={24}>
             <Col xs={24} sm={24} md={12} lg={8} xl={8}>
               <Form.Item name="search_contain">
-                <Input
+                <InputBox
                   type="text"
                   name="search_contain"
-                  size="large"
                   onChange={handleOnChange}
                   placeholder="Search by customer’s name, mobile number."
-                  // prefix={<SearchOutlined style={{ color: "#7e7b7b9c" }} />}
+                  prefix={<SearchOutlined style={{ color: "#7e7b7b9c" }} />}
                 />
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={6} xl={4}>
               <Space>
                 <Form.Item name="search_btn">
-                  <Button
+                  <XButton
                     className="search_btn"
-                    size="large"
                     type="primary"
                     htmlType="submit"
                   >
                     Search
-                  </Button>
+                  </XButton>
                 </Form.Item>
                 <Form.Item name="reset_btn">
-                  <Button
+                  <XButton
                     type="primary"
                     ghost
                     onClick={() => handleReset()}
-                    size="large"
                     style={{ width: 100 }}
                   >
                     Reset
-                  </Button>
+                  </XButton>
                 </Form.Item>
               </Space>
             </Col>
           </Row>
         </Form>
         <ScrollBox>
-          {/* <Table
-          dataSource={tableData}
-          columns={columns}
-          size="small"
-          pagination={false}
-        /> */}
           <Xtable
             dataSource={tableData}
             columns={columns}
@@ -193,18 +194,6 @@ const CustomersList = (props) => {
             }
           />
         </ScrollBox>
-        {/* <ScrollBox>
-                <Xtable dataSource={dataSource} columns={columns} pagination={false} scroll={{ x: 768 }} />
-                <Xpagination
-                    pageSizeOptions={['10', '15', '25', '50']}
-                    showSizeChanger
-                    onChange={handlePaginationPageChange}
-                    current={pagination.page_no}
-                    defaultPageSize={pagination.page_size}
-                    total={getCouponListState.total_records}
-                    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-                />
-            </ScrollBox> */}
       </PageContainer>
     </>
   );

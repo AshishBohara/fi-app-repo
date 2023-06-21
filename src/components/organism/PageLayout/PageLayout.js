@@ -2,11 +2,13 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Layout, theme } from "antd";
 import Sidebar from "../Sidebar/Sidebar";
+import { useEffect } from "react";
 const { Content, Sider } = Layout;
 const PageLayout = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <Layout>
       <Sider

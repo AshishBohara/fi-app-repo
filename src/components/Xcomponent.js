@@ -1,4 +1,4 @@
-import { Pagination, Table } from "antd";
+import { Button, Input, Pagination, Table } from "antd";
 import styled from "styled-components";
 
 export const LoginContainer = styled.div`
@@ -50,4 +50,15 @@ export const Xpagination = styled(Pagination)`
   display: flex;
   justify-content: center;
   margin: 1rem 0;
+`;
+
+export const InputBox = styled(Input)`
+  input {
+    font-size: 14px;
+  }
+`;
+
+export const XButton = styled(Button)`
+  font-size: 14px;
+  border-radius: 7px !important;
 `;
